@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const products = [
+import { Product } from "../../types/types";
+import Form from "./Form";
+import "./Product.css";
+
+const products: Product[] = [
   {
     id: 1,
     title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
@@ -270,5 +274,40 @@ const products = [
 ];
 
 export default function ProductList() {
-  return <div>ProductList</div>;
+  const [filteredProducts, setFilteredProducts] =
+    React.useState<Product[]>(products);
+
+  const handleSearch = (searchTerm: string) => {
+    const filtered = products.filter((product) =>
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  };
+
+  return (
+    <div className="product-list">
+      <Form onSubmit={handleSearch} />
+      <div className="product-list-container">
+        {filteredProducts.length > 0 ? (
+          <div className="product-grid">
+            {filteredProducts.map((product) => (
+              <div key={product.id} className="product-container">
+                <h2>{product.title}</h2>
+                <p>{product.description}</p>
+                <div className="image">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    // style={{ width: "150px" }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No products found.</p>
+        )}
+      </div>
+    </div>
+  );
 }
