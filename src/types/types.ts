@@ -10,3 +10,9 @@ export type Product = {
     count: number;
   };
 };
+
+export type Todo = {
+  title: string;
+  date: string;
+  status: string;
+};
